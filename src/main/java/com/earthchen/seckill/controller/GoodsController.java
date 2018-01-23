@@ -2,7 +2,6 @@ package com.earthchen.seckill.controller;
 
 
 import com.earthchen.seckill.domain.SecKillUser;
-import com.earthchen.seckill.domain.User;
 import com.earthchen.seckill.redis.RedisService;
 import com.earthchen.seckill.service.GoodsService;
 import com.earthchen.seckill.service.SecKillUserService;
@@ -41,7 +40,7 @@ public class GoodsController {
     }
 
     @GetMapping("/to_detail/{goodsId}")
-    public String detail(Model model, User user,
+    public String detail(Model model, SecKillUser user,
                          @PathVariable("goodsId") long goodsId) {
         model.addAttribute("user", user);
 
