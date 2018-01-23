@@ -53,9 +53,60 @@ public class SecKillUserServiceImpl implements SecKillUserService {
         return true;
     }
 
+    /**
+     * 使用对象级缓存
+     * <p>
+     * 对象级缓存一般不设有效期(只要不变化即永久有效)
+     *
+     * @param id
+     * @return
+     */
     @Override
     public SecKillUser getById(long id) {
-        return secKillUserDao.getById(id);
+        //取缓存
+        SecKillUser user = redisService.get(SecKillUserKey.getById, "" + id, SecKillUser.class);
+        if (user != null) {
+            return user;
+        }
+        //取数据库
+        user = secKillUserDao.getById(id);
+        if (user != null) {
+            redisService.set(SecKillUserKey.getById, "" + id, user);
+        }
+        return user;
+    }
+
+
+    /**
+     * 修改用户密码
+     * <p>
+     * <p>
+     * http://blog.csdn.net/tTU1EvLDeLFq5btqiK/article/details/78693323
+     *
+     * @param token
+     * @param id
+     * @param formPass
+     * @return
+     */
+    public boolean updatePassword(String token, long id, String formPass) {
+        //取user
+        SecKillUser user = getById(id);
+        if (user == null) {
+            throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+        }
+        //更新数据库
+        SecKillUser toBeUpdate = new SecKillUser();
+        toBeUpdate.setId(id);
+        toBeUpdate.setPassword(MD5Util.formPassToDBPass(formPass, user.getSalt()));
+        secKillUserDao.update(toBeUpdate);
+
+        //处理缓存
+        // 删除redis中原有的id对应的用户信息
+        redisService.delete(SecKillUserKey.getById, "" + id);
+        user.setPassword(toBeUpdate.getPassword());
+        // 更新redis中token对应的用户信息
+        redisService.set(SecKillUserKey.token, token, user);
+        return true;
     }
 
     @Override

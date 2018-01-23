@@ -9,4 +9,5 @@ public class SecKillUserKey extends BasePrefix {
     }
 
     public static SecKillUserKey token = new SecKillUserKey(TOKEN_EXPIRE, "token");
+    public static SecKillUserKey getById = new SecKillUserKey(0, "id");
 }
