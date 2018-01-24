@@ -15,12 +15,28 @@ public class MQSenderTest {
     @Autowired
     private MQSender mqSender;
 
-    @Autowired
-    private MQReceiver mqReceiver;
 
     @Test
     public void send() {
         mqSender.send("mq测试");
+    }
 
+    @Test
+    public void sendMiaoshaMessage() {
+    }
+
+    @Test
+    public void sendTopic() {
+        mqSender.sendTopic("mq topic 方式测试");
+    }
+
+    @Test
+    public void sendFanout() {
+        mqSender.sendFanout("mq fanout模式(广播模式)");
+    }
+
+    @Test
+    public void sendHeader() {
+        mqSender.sendHeader("mq header模式");
     }
 }

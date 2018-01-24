@@ -20,9 +20,9 @@ public class MQConfig {
     public static final String TOPIC_QUEUE1 = "topic.queue1";
     public static final String TOPIC_QUEUE2 = "topic.queue2";
     public static final String HEADER_QUEUE = "header.queue";
-    public static final String TOPIC_EXCHANGE = "topicExchage";
-    public static final String FANOUT_EXCHANGE = "fanoutxchage";
-    public static final String HEADERS_EXCHANGE = "headersExchage";
+    public static final String TOPIC_EXCHANGE = "topicExchange";
+    public static final String FANOUT_EXCHANGE = "fanoutExchange";
+    public static final String HEADERS_EXCHANGE = "headersExchange";
 
     /**
      * Direct模式 交换机Exchange
@@ -46,43 +46,45 @@ public class MQConfig {
     }
 
     @Bean
-    public TopicExchange topicExchage() {
+    public TopicExchange topicExchange() {
         return new TopicExchange(TOPIC_EXCHANGE);
     }
 
     @Bean
     public Binding topicBinding1() {
-        return BindingBuilder.bind(topicQueue1()).to(topicExchage()).with("topic.key1");
+        return BindingBuilder.bind(topicQueue1()).to(topicExchange()).with("topic.key1");
     }
 
     @Bean
     public Binding topicBinding2() {
-        return BindingBuilder.bind(topicQueue2()).to(topicExchage()).with("topic.#");
+        return BindingBuilder.bind(topicQueue2()).to(topicExchange()).with("topic.#");
     }
 
     /**
      * Fanout模式 交换机Exchange
+     * <p>
+     * 广播模式
      */
     @Bean
-    public FanoutExchange fanoutExchage() {
+    public FanoutExchange fanoutExchange() {
         return new FanoutExchange(FANOUT_EXCHANGE);
     }
 
     @Bean
     public Binding FanoutBinding1() {
-        return BindingBuilder.bind(topicQueue1()).to(fanoutExchage());
+        return BindingBuilder.bind(topicQueue1()).to(fanoutExchange());
     }
 
     @Bean
     public Binding FanoutBinding2() {
-        return BindingBuilder.bind(topicQueue2()).to(fanoutExchage());
+        return BindingBuilder.bind(topicQueue2()).to(fanoutExchange());
     }
 
     /**
      * Header模式 交换机Exchange
      */
     @Bean
-    public HeadersExchange headersExchage() {
+    public HeadersExchange headersExchange() {
         return new HeadersExchange(HEADERS_EXCHANGE);
     }
 
@@ -93,9 +95,9 @@ public class MQConfig {
 
     @Bean
     public Binding headerBinding() {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("header1", "value1");
         map.put("header2", "value2");
-        return BindingBuilder.bind(headerQueue1()).to(headersExchage()).whereAll(map).match();
+        return BindingBuilder.bind(headerQueue1()).to(headersExchange()).whereAll(map).match();
     }
 }
