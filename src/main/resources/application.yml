@@ -10,7 +10,7 @@ spring:
 
   # druid
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/seckill?useUnicode: true&characterEncoding: utf-8&allowMultiQueries: true&useSSL: false
+      url: jdbc:mysql://127.0.0.1:3306/seckill?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
       username: root
       password: 123456
       driver-class-name: com.mysql.jdbc.Driver
@@ -29,6 +29,43 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
 
+  # static
+  resources:
+      add-mappings: true
+      # 缓存时间（s）
+      cache-period: 3600
+      chain.cache: true
+      chain.enabled: true
+      chain.gzipped: true
+      chain.html-application-cache: true
+      static-locations: classpath:/static/
+
+  # rabbitmq
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+#        消费者数量
+        concurrency: 10
+        max-concurrency: 10
+#        消费者每次从队列中获取的消息数量
+        prefetch: 1
+#        消费者自动启动
+        auto-startup: true
+#        消费失败，自动重新入队
+        default-requeue-rejected: true
+    template:
+      retry:
+#      启用发送重试
+        enabled: true
+        initial-interval: 1000
+        max-attempts: 3
+        max-interval: 10000
+        multiplier: 1.0
 
 
 
@@ -43,17 +80,8 @@ mybatis:
   mapperLocations: classpath:com/earthchen/seckill/dao/*.xml
   
   
-#static
-spring:
-  resources:
-    add-mappings: true
-    # 缓存时间（s）
-    cache-period: 3600
-    chain.cache: true 
-    chain.enabled: true
-    chain.gzipped: true
-    chain.html-application-cache: true
-    static-locations: classpath:/static/
+
+
 
 
   #redis
