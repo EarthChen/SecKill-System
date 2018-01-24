@@ -5,6 +5,8 @@ import com.earthchen.seckill.domain.OrderInfo;
 import com.earthchen.seckill.domain.SecKillOrder;
 import com.earthchen.seckill.domain.SecKillUser;
 import com.earthchen.seckill.domain.User;
+import com.earthchen.seckill.redis.OrderKey;
+import com.earthchen.seckill.redis.RedisService;
 import com.earthchen.seckill.service.OrderService;
 import com.earthchen.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class OrderServiceIml implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private RedisService redisService;
+
 
     /**
      * 根据用户id和商品id查询秒杀订单
@@ -29,7 +34,8 @@ public class OrderServiceIml implements OrderService {
      */
     @Override
     public SecKillOrder getMiaoshaOrderByUserIdGoodsId(long userId, long goodsId) {
-        return orderDao.getMiaoshaOrderByUserIdGoodsId(userId, goodsId);
+//        return orderDao.getMiaoshaOrderByUserIdGoodsId(userId, goodsId);
+        return redisService.get(OrderKey.getSeckillOrderByUidGid, "" + userId + "_" + goodsId, SecKillOrder.class);
     }
 
     /**
@@ -58,6 +64,9 @@ public class OrderServiceIml implements OrderService {
         miaoshaOrder.setOrderId(orderId);
         miaoshaOrder.setUserId(user.getId());
         orderDao.insertSeckillOrder(miaoshaOrder);
+
+        redisService.set(OrderKey.getSeckillOrderByUidGid, "" + user.getId() + "_" + goods.getId(), miaoshaOrder);
+
         return orderInfo;
     }
 
