@@ -60,4 +60,9 @@ public class OrderServiceIml implements OrderService {
         orderDao.insertSeckillOrder(miaoshaOrder);
         return orderInfo;
     }
+
+    @Override
+    public OrderInfo getOrderById(long orderId) {
+        return orderDao.getOrderById(orderId);
+    }
 }

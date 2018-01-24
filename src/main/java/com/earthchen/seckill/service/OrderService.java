@@ -10,4 +10,6 @@ public interface OrderService {
     SecKillOrder getMiaoshaOrderByUserIdGoodsId(long id, long goodsId);
 
     OrderInfo createOrder(SecKillUser user, GoodsVo goods);
+
+    OrderInfo getOrderById(long orderId);
 }

@@ -4,8 +4,10 @@ package com.earthchen.seckill.controller;
 import com.earthchen.seckill.domain.SecKillUser;
 import com.earthchen.seckill.redis.GoodsKey;
 import com.earthchen.seckill.redis.RedisService;
+import com.earthchen.seckill.result.Result;
 import com.earthchen.seckill.service.GoodsService;
 import com.earthchen.seckill.service.SecKillUserService;
+import com.earthchen.seckill.vo.GoodsDetailVo;
 import com.earthchen.seckill.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,18 +84,14 @@ public class GoodsController {
         return html;
     }
 
-    @GetMapping("/to_detail/{goodsId}")
-    public String detail(Model model, SecKillUser user,
-                         @PathVariable("goodsId") long goodsId) {
-        model.addAttribute("user", user);
-
+    @GetMapping(value = "/detail/{goodsId}")
+    @ResponseBody
+    public Result<GoodsDetailVo> detail(SecKillUser user,
+                                        @PathVariable("goodsId") long goodsId) {
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
-        model.addAttribute("goods", goods);
-
         long startAt = goods.getStartDate().getTime();
         long endAt = goods.getEndDate().getTime();
         long now = System.currentTimeMillis();
-
         int miaoshaStatus = 0;
         int remainSeconds = 0;
         if (now < startAt) {//秒杀还没开始，倒计时
@@ -106,9 +104,12 @@ public class GoodsController {
             miaoshaStatus = 1;
             remainSeconds = 0;
         }
-        model.addAttribute("miaoshaStatus", miaoshaStatus);
-        model.addAttribute("remainSeconds", remainSeconds);
-        return "goods_detail";
+        GoodsDetailVo vo = new GoodsDetailVo();
+        vo.setGoods(goods);
+        vo.setUser(user);
+        vo.setRemainSeconds(remainSeconds);
+        vo.setMiaoshaStatus(miaoshaStatus);
+        return Result.success(vo);
     }
 
 
