@@ -4,7 +4,7 @@ import com.earthchen.seckill.dao.SecKillUserDao;
 import com.earthchen.seckill.domain.SecKillUser;
 import com.earthchen.seckill.exception.GlobalException;
 import com.earthchen.seckill.redis.RedisService;
-import com.earthchen.seckill.redis.SecKillUserKey;
+import com.earthchen.seckill.redis.key.SecKillUserKey;
 import com.earthchen.seckill.result.CodeMsg;
 import com.earthchen.seckill.service.SecKillUserService;
 import com.earthchen.seckill.util.MD5Util;

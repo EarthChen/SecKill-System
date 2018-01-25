@@ -9,9 +9,19 @@ public interface SeckillService {
 
     /**
      * 秒杀方法
+     *
      * @param user
      * @param goods
      * @return
      */
     OrderInfo miaosha(SecKillUser user, GoodsVo goods);
+
+    /**
+     * 获取秒杀结果
+     *
+     * @param id
+     * @param goodsId
+     * @return
+     */
+    long getMiaoshaResult(Long id, long goodsId);
 }

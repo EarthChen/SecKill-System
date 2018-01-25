@@ -9,6 +9,7 @@ public interface GoodsService {
 
     /**
      * 获取商品列表
+     *
      * @return
      */
     List<GoodsVo> listGoodsVo();
@@ -16,18 +17,25 @@ public interface GoodsService {
 
     /**
      * 根据商品id获取商品信息
+     *
      * @param goodsId
      * @return
      */
-    GoodsVo getGoodsVoByGoodsId(long goodsId) ;
+    GoodsVo getGoodsVoByGoodsId(long goodsId);
 
 
     /**
      * 减少库存
+     *
      * @param goods
      */
-    void reduceStock(GoodsVo goods);
+    boolean reduceStock(GoodsVo goods);
 
 
-
+    /**
+     * 重置库存
+     *
+     * @param goodsList
+     */
+    void resetStock(List<GoodsVo> goodsList);
 }

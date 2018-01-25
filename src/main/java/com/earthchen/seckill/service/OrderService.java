@@ -12,4 +12,6 @@ public interface OrderService {
     OrderInfo createOrder(SecKillUser user, GoodsVo goods);
 
     OrderInfo getOrderById(long orderId);
+
+    void deleteOrders();
 }

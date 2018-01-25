@@ -1,4 +1,4 @@
-package com.earthchen.seckill.redis;
+package com.earthchen.seckill.redis.key;
 
 public class OrderKey extends BasePrefix {
 

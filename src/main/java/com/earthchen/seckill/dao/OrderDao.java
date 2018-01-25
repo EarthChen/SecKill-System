@@ -2,10 +2,7 @@ package com.earthchen.seckill.dao;
 
 import com.earthchen.seckill.domain.OrderInfo;
 import com.earthchen.seckill.domain.SecKillOrder;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,4 +21,10 @@ public interface OrderDao {
 
     @Select("select * from order_info where id = #{orderId}")
     OrderInfo getOrderById(long orderId);
+
+    @Delete("delete from order_info")
+    void deleteOrders();
+
+    @Delete("delete from miaosha_order")
+    void deleteMiaoshaOrders();
 }

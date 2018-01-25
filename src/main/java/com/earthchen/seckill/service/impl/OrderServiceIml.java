@@ -4,8 +4,7 @@ import com.earthchen.seckill.dao.OrderDao;
 import com.earthchen.seckill.domain.OrderInfo;
 import com.earthchen.seckill.domain.SecKillOrder;
 import com.earthchen.seckill.domain.SecKillUser;
-import com.earthchen.seckill.domain.User;
-import com.earthchen.seckill.redis.OrderKey;
+import com.earthchen.seckill.redis.key.OrderKey;
 import com.earthchen.seckill.redis.RedisService;
 import com.earthchen.seckill.service.OrderService;
 import com.earthchen.seckill.vo.GoodsVo;
@@ -58,10 +57,10 @@ public class OrderServiceIml implements OrderService {
         orderInfo.setOrderChannel(1);
         orderInfo.setStatus(0);
         orderInfo.setUserId(user.getId());
-        long orderId = orderDao.insert(orderInfo);
+        orderDao.insert(orderInfo);
         SecKillOrder miaoshaOrder = new SecKillOrder();
         miaoshaOrder.setGoodsId(goods.getId());
-        miaoshaOrder.setOrderId(orderId);
+        miaoshaOrder.setOrderId(orderInfo.getId());
         miaoshaOrder.setUserId(user.getId());
         orderDao.insertSeckillOrder(miaoshaOrder);
 
@@ -73,5 +72,11 @@ public class OrderServiceIml implements OrderService {
     @Override
     public OrderInfo getOrderById(long orderId) {
         return orderDao.getOrderById(orderId);
+    }
+
+    @Override
+    public void deleteOrders() {
+        orderDao.deleteOrders();
+        orderDao.deleteMiaoshaOrders();
     }
 }

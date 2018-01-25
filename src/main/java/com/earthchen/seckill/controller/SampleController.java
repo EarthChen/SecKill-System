@@ -2,7 +2,7 @@ package com.earthchen.seckill.controller;
 
 import com.earthchen.seckill.domain.User;
 import com.earthchen.seckill.redis.RedisService;
-import com.earthchen.seckill.redis.UserKey;
+import com.earthchen.seckill.redis.key.UserKey;
 import com.earthchen.seckill.result.CodeMsg;
 import com.earthchen.seckill.result.Result;
 import com.earthchen.seckill.service.UserService;

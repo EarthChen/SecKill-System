@@ -2,13 +2,14 @@ package com.earthchen.seckill.controller;
 
 
 import com.earthchen.seckill.domain.SecKillUser;
-import com.earthchen.seckill.redis.GoodsKey;
+import com.earthchen.seckill.redis.key.GoodsKey;
 import com.earthchen.seckill.redis.RedisService;
 import com.earthchen.seckill.result.Result;
 import com.earthchen.seckill.service.GoodsService;
 import com.earthchen.seckill.service.SecKillUserService;
 import com.earthchen.seckill.vo.GoodsDetailVo;
 import com.earthchen.seckill.vo.GoodsVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/goods")
+@Slf4j
 public class GoodsController {
 
     @Autowired
@@ -88,6 +90,7 @@ public class GoodsController {
     @ResponseBody
     public Result<GoodsDetailVo> detail(SecKillUser user,
                                         @PathVariable("goodsId") long goodsId) {
+        log.info("获取商品信息 goodsId=" + goodsId);
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
         long startAt = goods.getStartDate().getTime();
         long endAt = goods.getEndDate().getTime();
