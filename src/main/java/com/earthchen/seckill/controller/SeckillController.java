@@ -1,5 +1,6 @@
 package com.earthchen.seckill.controller;
 
+import com.earthchen.seckill.access.AccessLimit;
 import com.earthchen.seckill.domain.SecKillOrder;
 import com.earthchen.seckill.domain.SecKillUser;
 import com.earthchen.seckill.rabbitmq.MQSender;
@@ -83,7 +84,7 @@ public class SeckillController implements InitializingBean {
      * @param verifyCode
      * @return
      */
-    //    @AccessLimit(seconds = 5, maxCount = 5, needLogin = true)
+    @AccessLimit(seconds = 5, maxCount = 5, needLogin = true)
     @RequestMapping(value = "/path", method = RequestMethod.GET)
     @ResponseBody
     public Result<String> getMiaoshaPath(HttpServletRequest request, SecKillUser user,
@@ -173,6 +174,7 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return
      */
+    @AccessLimit(seconds = 5, maxCount = 5, needLogin = true)
     @RequestMapping(value = "/verifyCode", method = RequestMethod.GET)
     @ResponseBody
     public Result<String> getMiaoshaVerifyCod(HttpServletResponse response, SecKillUser user,
